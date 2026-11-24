@@ -2,6 +2,8 @@
 
 面向中国用户的欧美艺人官方周边导航网站。当前实现首页与艺人详情页，收录 20 位艺人的资料、肖像及官网/官方商店入口，支持分类、搜索、本机收藏和移动端触摸预览。
 
+[在线体验](https://merch-finder-omega.vercel.app/) · [GitHub 源码](https://github.com/Liukeer-sys/merch-finder)
+
 ## 运行
 
 在本目录执行：
@@ -25,7 +27,7 @@ Node 检查结果为 v24.21.0，npm 为 11.19.0。依赖由 package-lock.json �
 
 ## Vercel 部署
 
-在 Vercel 中导入 GitHub 仓库 `Liukeer-sys/merch-finder`，项目根目录使用仓库根目录。
+Vercel 项目为 `leah-5835/merch-finder`，项目根目录使用仓库根目录。登录后可运行 `npx vercel --prod` 发布；推送后自动发布需要在 Vercel 的 Settings → Git 中连接仓库 `Liukeer-sys/merch-finder`。
 
 - Framework Preset 为 Vite。
 - Build Command 为 `npm run build`，Output Directory 为 `dist`。
