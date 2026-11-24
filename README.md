@@ -1,6 +1,6 @@
 # Merch Finder
 
-面向中国用户的欧美艺人官方周边导航网站。当前实现首页与艺人详情页，数据和肖像均为原型中的演示内容。
+面向中国用户的欧美艺人官方周边导航网站。当前实现首页与艺人详情页，收录 20 位艺人的资料、肖像及官网/官方商店入口，支持分类、搜索、本机收藏和移动端触摸预览。
 
 ## 运行
 
@@ -22,6 +22,16 @@ npm run preview
 
 Node 检查结果为 v24.21.0，npm 为 11.19.0。依赖由 package-lock.json 锁定。
 运行依赖只有 React 和 React DOM，开发依赖为 TypeScript、Vite 及 React 类型；没有路由、图标、手势或 UI 库。
+
+## Vercel 部署
+
+在 Vercel 中导入 GitHub 仓库 `Liukeer-sys/merch-finder`，项目根目录使用仓库根目录。
+
+- Framework Preset 为 Vite。
+- Build Command 为 `npm run build`，Output Directory 为 `dist`。
+- `vercel.json` 配置艺人详情页的路由回退，支持直接打开或刷新 `/artists/:artistId`。
+- `.vercelignore` 排除采集工作目录及开发参考文件，产品资源位于 `public/images`。
+- `.vercel` 和本机环境变量文件由 `.gitignore` 排除。
 
 ## 第一阶段：工程与原型迁移
 

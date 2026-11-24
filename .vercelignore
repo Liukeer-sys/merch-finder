@@ -1,0 +1,10 @@
+node_modules
+dist
+staging
+.git
+.openai
+.env
+.env.*
+reference网站参考html
+网站参考图
+/*.png
