@@ -27,7 +27,19 @@ Node 检查结果为 v24.21.0，npm 为 11.19.0。依赖由 package-lock.json �
 
 ## Vercel 部署
 
-Vercel 项目为 `leah-5835/merch-finder`，项目根目录使用仓库根目录。登录后可运行 `npx vercel --prod` 发布；推送后自动发布需要在 Vercel 的 Settings → Git 中连接仓库 `Liukeer-sys/merch-finder`。
+Vercel 项目为 `leah-5835/merch-finder`，已连接 GitHub 仓库 `Liukeer-sys/merch-finder`，项目根目录使用仓库根目录。推送到 `main` 分支后，Vercel 自动构建并更新正式网站，线上地址保持不变。
+
+在 VS Code 的 PowerShell 终端中，检查本次修改后提交并推送：
+
+```powershell
+git status
+git diff
+git add <本次需要发布的文件路径>
+git commit -m "Describe the update"
+git push origin main
+```
+
+将 `git add` 后的占位内容替换为实际文件路径。发布进度可在 Vercel 项目的 Deployments 页面查看；只有构建成功后，正式网站才会更新。需要手动从本机发布时，也可以运行 `npx.cmd vercel --prod`。
 
 - Framework Preset 为 Vite。
 - Build Command 为 `npm run build`，Output Directory 为 `dist`。
