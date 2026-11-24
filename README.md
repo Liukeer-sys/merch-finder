@@ -27,6 +27,14 @@ Node 检查结果为 v24.21.0，npm 为 11.19.0。依赖由 package-lock.json �
 
 ## Vercel 部署
 
+### 图片加载
+
+网页使用 `public/images/optimized/` 中预先生成的 WebP：首页肖像最长边 600px，详情页肖像最长边 960px，官网/商店预览最长边 1280px。原始素材和原有图片映射保留，`src/imageUrl.ts` 在渲染时选择压缩版。首页前四张立即加载，其余按需加载。
+
+替换原图后，在这台电脑执行 `D:/anaconda/python.exe scripts/optimize_images.py`，并将生成的图片及 `src/data/optimizedImages.ts` 一起提交。该脚本使用本机已有的 Pillow；Vercel 直接发布生成的文件，无需安装图片服务或额外构建依赖。
+
+### GitHub 自动部署
+
 Vercel 项目为 `leah-5835/merch-finder`，已连接 GitHub 仓库 `Liukeer-sys/merch-finder`，项目根目录使用仓库根目录。推送到 `main` 分支后，Vercel 自动构建并更新正式网站，线上地址保持不变。
 
 在 VS Code 的 PowerShell 终端中，检查本次修改后提交并推送：

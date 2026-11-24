@@ -14,6 +14,8 @@ test('20 real homepage cards use selected assets, honest stand-ins and complete 
     const {realArtistPages,realArtistDetails} = await server.ssrLoadModule('/src/data/realArtistPages.ts');
     const {ArtistPage} = await server.ssrLoadModule('/src/pages/ArtistPage.tsx');
     const {ArtistCard} = await server.ssrLoadModule('/src/components/ArtistCard.tsx');
+    const {OfficialLinkPanel} = await server.ssrLoadModule('/src/components/OfficialLinkPanel.tsx');
+    const {imageUrl} = await server.ssrLoadModule('/src/imageUrl.ts');
     const {default:HomePage} = await server.ssrLoadModule('/src/pages/HomePage.tsx');
     assert.equal(homepageArtists.length,20);
     assert.equal(new Set(homepageArtists.map(a=>a.id)).size,20);
@@ -34,16 +36,28 @@ test('20 real homepage cards use selected assets, honest stand-ins and complete 
       assert(html.includes('artist active'));
       assert(html.includes(`data-artist-id="${artist.id}"`));
       assert(html.includes('artist-info'));
+      const thumbnail = imageUrl(artist.image, 'card');
+      assert(thumbnail.endsWith('.webp'));
+      assert(html.includes(`src="${thumbnail}"`));
+      assert(fs.statSync(`public${thumbnail}`).size < 150 * 1024, `Oversized homepage image: ${artist.id}`);
       const profile = realArtistPages.find(a=>a.id===artist.id);
       const details = realArtistDetails.find(a=>a.artistId===artist.id);
       for (const link of [details.website, ...details.stores].filter(Boolean)) {
         if (link.previewImage) assert(fs.existsSync(`public${link.previewImage}`), `Missing preview for ${link.id}: ${link.previewImage}`);
+        if (link.previewImage) {
+          const preview = imageUrl(link.previewImage);
+          assert(preview.endsWith('.webp'));
+          assert(fs.statSync(`public${preview}`).size < 500 * 1024, `Oversized link preview: ${link.id}`);
+          const panel = renderToStaticMarkup(createElement(OfficialLinkPanel,{link,actionLabel:'VISIT'}));
+          assert(panel.includes(`src="${preview}"`));
+        }
       }
       const detail = renderToStaticMarkup(createElement(ArtistPage,{
         artist:profile,details,saved:false,onToggle:()=>{},onBack:()=>{},storageError:false,
       }));
       assert.equal(profile.image,artist.image);
-      assert(detail.includes(`class="hero-visual"><img src="${artist.image}"`));
+      assert(detail.includes(`class="hero-visual"><img src="${imageUrl(artist.image)}"`));
+      assert(fs.statSync(`public${imageUrl(artist.image)}`).size < 250 * 1024, `Oversized hero: ${artist.id}`);
       if(card.placeholder) assert(detail.includes('临时黑白占位图，非本人肖像'));
     }
     const home = renderToStaticMarkup(createElement(HomePage,{onNavigate:()=>{}}));
@@ -51,5 +65,8 @@ test('20 real homepage cards use selected assets, honest stand-ins and complete 
     assert(!home.includes('LUNA KAI'));
     assert(home.includes('COUNTRY / FOLK'));
     assert(home.includes('ROCK'));
+    assert.equal((home.match(/loading="eager"/g)||[]).length,4);
+    assert.equal((home.match(/loading="lazy"/g)||[]).length,16);
+    assert.equal((home.match(/<img\b[^>]*fetchPriority="high"/g)||[]).length,1);
   } finally {await server.close();}
 });

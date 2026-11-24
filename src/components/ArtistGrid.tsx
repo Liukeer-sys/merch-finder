@@ -6,7 +6,7 @@ export function ArtistGrid({ artists, onOpen }: { artists: readonly Artist[]; on
   return <main>
     <div ref={ref} className="gallery" aria-label="艺人列表">
       {[0, 1].map(column => <div key={column} className={`column ${column ? 'right' : 'left'}`}>
-        {artists.filter((_, i) => i % 2 === column).map(artist => <ArtistCard key={artist.id} artist={artist} active={activeArtistId === artist.id} onOpen={onOpen} />)}
+        {artists.filter((_, i) => i % 2 === column).map((artist, index) => <ArtistCard key={artist.id} artist={artist} active={activeArtistId === artist.id} onOpen={onOpen} eager={index < 2} priority={column === 0 && index === 0} />)}
       </div>)}
     </div>
     {!artists.length && <p className="empty" role="status">没有找到匹配的艺人，请尝试其他分类或关键词。</p>}

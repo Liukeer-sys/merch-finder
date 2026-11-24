@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import type { OfficialLink } from '../types/artist';
+import { imageUrl } from '../imageUrl';
 import { IconButton } from './ui/IconButton';
 import { OutlineButton } from './ui/OutlineButton';
 export function verifiedDestination(link: OfficialLink): string | undefined {
@@ -27,7 +28,7 @@ export function OfficialLinkPanel({ link, actionLabel }: { link: OfficialLink; a
       : '中国大陆网络待测试';
 
   return <section className="official-panel" aria-label={link.title}>
-    <div className="link-preview">{link.previewImage && !imageFailed ? <img src={link.previewImage} alt={link.previewAlt ?? `${link.title}预览`} loading="lazy" decoding="async" onError={() => setImageFailed(true)}/> : <div className="preview-placeholder"><span>{link.title}</span><small>预览图待补充</small></div>}</div>
+    <div className="link-preview">{link.previewImage && !imageFailed ? <img src={imageUrl(link.previewImage)} alt={link.previewAlt ?? `${link.title}预览`} loading="lazy" decoding="async" onError={() => setImageFailed(true)}/> : <div className="preview-placeholder"><span>{link.title}</span><small>预览图待补充</small></div>}</div>
     <div className="link-url-row">
       <span className="link-url">{link.url ?? '链接待补充'}</span>
       {destination && <IconButton
